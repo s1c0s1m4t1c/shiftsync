@@ -1,3 +1,14 @@
+// Change the component definition line to this:
+const ShiftCalendarGrid = ({ year, month, assignments, shiftDefinitions, profiles, events, onDayClick }: any) => {
+
+// Update the event filter parameter:
+const cellEvents = events.filter((ev: any) => {
+
+// Update the assignment map:
+{dayAssignments.map((assign: any, assignIdx: number) => {
+  const shiftDetails = shiftDefinitions.find((s: any) => s.id === assign.shiftId);
+  const profileDetails = profiles.find((p: any) => p.id === assign.profileId);
+
 import { Profile, Shift, AppEvent, Assignment } from './types';
 
 interface Props {
