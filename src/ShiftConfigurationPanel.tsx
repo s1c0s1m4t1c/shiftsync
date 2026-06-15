@@ -1,40 +1,33 @@
-import { Profile } from './types';
+import { useState } from 'react';
 
-interface Props {
-  profiles: Profile[];
-  onAddShift: (shift: any) => void;
-  onCancel: () => void;
-}
-
-const ShiftConfigurationPanel = ({ profiles, onAddShift, onCancel }: Props) => {
-  // ... rest of your code ...
-
-import React, { useState } from 'react';
-
-const ShiftConfigurationPanel = ({ profiles, onAddShift, onCancel }) => {
+const ShiftConfigurationPanel = ({ profiles, onAddShift, onCancel }: any) => {
   const [name, setName] = useState('');
   const [startTime, setStartTime] = useState('');
   const [endTime, setEndTime] = useState('');
   const [colour, setColour] = useState('#3b82f6');
   
-  // NEW: State to track which profiles are allowed to use this shift (defaults to everyone)
-  const [allowedProfiles, setAllowedProfiles] = useState(profiles.map(p => p.id));
+  // State to track which profiles are allowed to use this shift
+  const [allowedProfiles, setAllowedProfiles] = useState(profiles.map((p: any) => p.id));
 
-  const handleToggleProfile = (profileId) => {
-    setAllowedProfiles(prev => 
+  const handleToggleProfile = (profileId: any) => {
+    setAllowedProfiles((prev: any) => 
       prev.includes(profileId) 
-        ? prev.filter(id => id !== profileId) 
+        ? prev.filter((id: any) => id !== profileId) 
         : [...prev, profileId]
     );
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: any) => {
     e.preventDefault();
-    if (!name.trim() || allowedProfiles.length === 0) return; // Prevent creating unassigned shifts
+    if (!name.trim() || allowedProfiles.length === 0) return;
 
     const newShift = {
       id: `s${Date.now()}`, 
-      name, startTime, endTime, colour, allowedProfiles
+      name, 
+      startTime, 
+      endTime, 
+      colour, 
+      allowedProfiles
     };
 
     onAddShift(newShift);
@@ -46,7 +39,13 @@ const ShiftConfigurationPanel = ({ profiles, onAddShift, onCancel }) => {
       <form onSubmit={handleSubmit} className="shift-form">
         <div className="form-group">
           <label>Shift Name</label>
-          <input type="text" value={name} onChange={(e) => setName(e.target.value)} required />
+          <input 
+            type="text" 
+            value={name} 
+            onChange={(e) => setName(e.target.value)} 
+            placeholder="e.g., Night Shift"
+            required
+          />
         </div>
         
         <div className="form-row">
@@ -68,11 +67,10 @@ const ShiftConfigurationPanel = ({ profiles, onAddShift, onCancel }) => {
           </div>
         </div>
 
-        {/* NEW: Checkboxes to assign the shift to profiles */}
         <div className="form-group">
           <label>Available For:</label>
           <div className="checkbox-row">
-            {profiles.map(profile => (
+            {profiles.map((profile: any) => (
               <label key={profile.id} className="profile-checkbox">
                 <input 
                   type="checkbox" 
