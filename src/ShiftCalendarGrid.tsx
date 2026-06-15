@@ -1,3 +1,18 @@
+import { Profile, Shift, AppEvent, Assignment } from './types';
+
+interface Props {
+  year: number;
+  month: number;
+  assignments: { [key: string]: Assignment[] };
+  shiftDefinitions: Shift[];
+  profiles: Profile[];
+  events: AppEvent[];
+  onDayClick: (dateKey: string) => void;
+}
+
+const ShiftCalendarGrid = ({ year, month, assignments, shiftDefinitions, profiles, events, onDayClick }: Props) => {
+  // ... rest of your code ...
+
 import React, { useMemo } from 'react';
 
 const formatDateKey = (year, month, day) => {
