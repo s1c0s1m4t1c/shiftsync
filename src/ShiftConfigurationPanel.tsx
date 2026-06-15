@@ -1,3 +1,5 @@
+
+import React from 'react';
 import { useState } from 'react';
 
 const ShiftConfigurationPanel = ({ profiles, onAddShift, onCancel }: any) => {
