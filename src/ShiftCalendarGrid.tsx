@@ -1,3 +1,4 @@
+import React from 'react';
 const formatDateKey = (year: number, month: number, day: number) => {
   const mm = String(month + 1).padStart(2, '0');
   const dd = String(day).padStart(2, '0');
