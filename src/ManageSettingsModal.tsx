@@ -33,27 +33,38 @@ const ManageSettingsModal = ({ profiles, setProfiles, shiftDefinitions, setShift
 
   return (
     <div className="modal-overlay">
-      <div className="modal-content" style={{ padding: '20px', background: '#fff', borderRadius: '8px', maxWidth: '400px', width: '100%' }}>
-        <h2>Manage Settings</h2>
+      <div className="modal-content" style={{ padding: '20px', background: '#fff', borderRadius: '8px', maxWidth: '400px', width: '90%', margin: '0 auto' }}>
+        <h2 style={{ marginBottom: '20px' }}>Manage Settings</h2>
         
         <h3 style={{ marginTop: '20px' }}>Profiles</h3>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
           {profiles.map((p: any) => (
-            <div key={p.id} className="settings-row" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '10px' }}>
-              <span style={{ fontWeight: 'bold', minWidth: '60px' }}>{p.name}</span>
+            <div key={p.id} className="settings-row" style={{ 
+              display: 'grid', 
+              gridTemplateColumns: '80px 1fr 40px', 
+              alignItems: 'center', 
+              gap: '10px',
+              borderBottom: '1px solid #eee',
+              paddingBottom: '10px'
+            }}>
+              <span style={{ fontWeight: 'bold' }}>{p.name}</span>
+              
               <input 
                 type="file" 
                 accept="image/*" 
                 onChange={(e) => handlePhotoUpload(p.id, e)}
-                style={{ fontSize: '12px', width: '150px' }}
+                style={{ fontSize: '10px', width: '100%' }}
               />
-              {p.photo && (
-                <img 
-                  src={p.photo} 
-                  alt="Preview" 
-                  style={{ width: '40px', height: '40px', borderRadius: '50%', objectFit: 'cover' }} 
-                />
-              )}
+              
+              <div style={{ width: '40px', height: '40px' }}>
+                {p.photo && (
+                  <img 
+                    src={p.photo} 
+                    alt="Preview" 
+                    style={{ width: '40px', height: '40px', borderRadius: '50%', objectFit: 'cover' }} 
+                  />
+                )}
+              </div>
             </div>
           ))}
         </div>
