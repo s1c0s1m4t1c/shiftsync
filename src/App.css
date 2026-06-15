@@ -632,3 +632,26 @@ input[type="time"] {
 .delete-btn:hover {
   background-color: #fee2e2;
 }
+
+.settings-row {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 15px;
+  padding: 10px;
+  border-bottom: 1px solid #eee;
+}
+
+/* Ensure the file input doesn't take up too much space */
+.settings-row input[type="file"] {
+  max-width: 200px;
+}
+
+/* Ensure the preview image stays small and uniform */
+.settings-row img {
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+  border-radius: 50%;
+  margin-left: auto; /* Pushes the image to the right */
+}
