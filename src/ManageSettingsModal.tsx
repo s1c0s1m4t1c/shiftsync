@@ -33,7 +33,15 @@ const ManageSettingsModal = ({ profiles, setProfiles, shiftDefinitions, setShift
 
   return (
     <div className="modal-overlay">
-      <div className="modal-content" style={{ padding: '20px', background: '#fff', borderRadius: '8px', maxWidth: '400px', width: '90%', margin: '0 auto' }}>
+      <div className="modal-content" style={{ 
+        padding: '20px', 
+        background: '#fff', 
+        borderRadius: '8px', 
+        maxWidth: '400px', 
+        width: '90%', 
+        margin: '0 auto',
+        position: 'relative'
+      }}>
         <h2 style={{ marginBottom: '20px' }}>Manage Settings</h2>
         
         <h3 style={{ marginTop: '20px' }}>Profiles</h3>
@@ -49,12 +57,23 @@ const ManageSettingsModal = ({ profiles, setProfiles, shiftDefinitions, setShift
             }}>
               <span style={{ fontWeight: 'bold' }}>{p.name}</span>
               
-              <input 
-                type="file" 
-                accept="image/*" 
-                onChange={(e) => handlePhotoUpload(p.id, e)}
-                style={{ fontSize: '10px', width: '100%' }}
-              />
+              <label style={{ 
+                background: '#f0f0f0', 
+                padding: '6px', 
+                borderRadius: '4px', 
+                fontSize: '12px', 
+                textAlign: 'center',
+                border: '1px solid #ccc',
+                cursor: 'pointer'
+              }}>
+                Choose
+                <input 
+                  type="file" 
+                  accept="image/*" 
+                  onChange={(e) => handlePhotoUpload(p.id, e)}
+                  style={{ display: 'none' }} 
+                />
+              </label>
               
               <div style={{ width: '40px', height: '40px' }}>
                 {p.photo && (
