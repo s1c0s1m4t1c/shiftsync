@@ -1,32 +1,42 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import './App.css'; 
 import ShiftCalendarGrid from './ShiftCalendarGrid';
 import ShiftConfigurationPanel from './ShiftConfigurationPanel';
 import ManageSettingsModal from './ManageSettingsModal';
 
 export default function App() {
-  // Initialize state by looking in localStorage first, then falling back to defaults
   const [currentDate, setCurrentDate] = useState(new Date());
   const [showAddShift, setShowAddShift] = useState(false);
   const [showSettings, setShowSettings] = useState(false); 
   const [activeShiftId, setActiveShiftId] = useState('');
   const [activeProfileId, setActiveProfileId] = useState('p1'); 
   
-  const [profiles, setProfiles] = useState(() => JSON.parse(localStorage.getItem('profiles')) || [
-    { id: 'p1', name: 'Simon', colour: '#3b82f6', photo: '' },
-    { id: 'p2', name: 'Saulé', colour: '#ec4899', photo: '' }
-  ]);
+  const [profiles, setProfiles] = useState(() => {
+    const saved = localStorage.getItem('profiles');
+    return saved ? JSON.parse(saved) : [
+      { id: 'p1', name: 'Simon', colour: '#3b82f6', photo: '' },
+      { id: 'p2', name: 'Saulé', colour: '#ec4899', photo: '' }
+    ];
+  });
 
-  const [shiftDefinitions, setShiftDefinitions] = useState(() => JSON.parse(localStorage.getItem('shiftDefinitions')) || [
-    { id: 's1', name: 'Day wfh', startTime: '08:00', endTime: '16:00', colour: '#4ade80', allowedProfiles: ['p1'] },
-    { id: 's2', name: 'On Call', startTime: '16:00', endTime: '08:00', colour: '#ef4444', allowedProfiles: ['p1', 'p2'] }
-  ]);
+  const [shiftDefinitions, setShiftDefinitions] = useState(() => {
+    const saved = localStorage.getItem('shiftDefinitions');
+    return saved ? JSON.parse(saved) : [
+      { id: 's1', name: 'Day wfh', startTime: '08:00', endTime: '16:00', colour: '#4ade80', allowedProfiles: ['p1'] },
+      { id: 's2', name: 'On Call', startTime: '16:00', endTime: '08:00', colour: '#ef4444', allowedProfiles: ['p1', 'p2'] }
+    ];
+  });
 
-  const [assignments, setAssignments] = useState(() => JSON.parse(localStorage.getItem('assignments')) || {});
+  const [assignments, setAssignments] = useState(() => {
+    const saved = localStorage.getItem('assignments');
+    return saved ? JSON.parse(saved) : {};
+  });
 
-  const [events, setEvents] = useState(() => JSON.parse(localStorage.getItem('events')) || []);
+  const [events, setEvents] = useState(() => {
+    const saved = localStorage.getItem('events');
+    return saved ? JSON.parse(saved) : [];
+  });
 
-  // Sync effect: Any time any of these states change, write them to storage
   useEffect(() => {
     localStorage.setItem('profiles', JSON.stringify(profiles));
     localStorage.setItem('shiftDefinitions', JSON.stringify(shiftDefinitions));
@@ -41,19 +51,19 @@ export default function App() {
   const handleNextMonth = () => setCurrentDate(new Date(year, month + 1, 1));
   const monthName = currentDate.toLocaleString('default', { month: 'long' });
 
-  const handleAddShift = (newShift) => {
+  const handleAddShift = (newShift: any) => {
     setShiftDefinitions([...shiftDefinitions, newShift]);
     setActiveShiftId(newShift.id); 
     setShowAddShift(false); 
   };
 
-  const handleDayClick = (dateKey) => {
+  const handleDayClick = (dateKey: string) => {
     if (!activeShiftId) return;
-    setAssignments(prev => {
+    setAssignments((prev: any) => {
       const dayAssignments = prev[dateKey] || [];
-      const existingIndex = dayAssignments.findIndex(a => a.profileId === activeProfileId && a.shiftId === activeShiftId);
+      const existingIndex = dayAssignments.findIndex((a: any) => a.profileId === activeProfileId && a.shiftId === activeShiftId);
       let newDayAssignments = existingIndex >= 0 
-        ? dayAssignments.filter((_, i) => i !== existingIndex) 
+        ? dayAssignments.filter((_: any, i: number) => i !== existingIndex) 
         : [...dayAssignments, { profileId: activeProfileId, shiftId: activeShiftId }];
       return { ...prev, [dateKey]: newDayAssignments };
     });
@@ -75,7 +85,7 @@ export default function App() {
 
       <div className="profile-selector-container">
         <div className="profile-toggle">
-          {profiles.map(profile => (
+          {profiles.map((profile: any) => (
             <button
               key={profile.id}
               className={`profile-tab ${activeProfileId === profile.id ? 'active' : ''}`}
@@ -103,9 +113,9 @@ export default function App() {
       />
 
       <div className="palette-container">
-        <h3>Assigning to: <span style={{ color: profiles.find(p => p.id === activeProfileId)?.colour }}>{profiles.find(p => p.id === activeProfileId)?.name}</span></h3>
+        <h3>Assigning to: <span style={{ color: profiles.find((p: any) => p.id === activeProfileId)?.colour }}>{profiles.find((p: any) => p.id === activeProfileId)?.name}</span></h3>
         <div className="palette-list">
-          {visibleShifts.length > 0 ? visibleShifts.map(shift => (
+          {visibleShifts.length > 0 ? visibleShifts.map((shift: any) => (
             <button
               key={shift.id}
               className={`palette-btn ${activeShiftId === shift.id ? 'active' : ''}`}
