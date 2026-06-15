@@ -33,24 +33,38 @@ const ManageSettingsModal = ({ profiles, setProfiles, shiftDefinitions, setShift
 
   return (
     <div className="modal-overlay">
-      <div className="modal-content">
+      <div className="modal-content" style={{ padding: '20px', background: '#fff', borderRadius: '8px', maxWidth: '400px', width: '100%' }}>
         <h2>Manage Settings</h2>
         
-        <h3>Profiles</h3>
-        {profiles.map((p: any) => (
-          <div key={p.id} className="settings-row">
-            <span>{p.name}</span>
-            <input 
-              type="file" 
-              accept="image/*" 
-              onChange={(e) => handlePhotoUpload(p.id, e)} 
-            />
-            {p.photo && <img src={p.photo} alt="Preview" style={{ width: '40px', borderRadius: '50%' }} />}
-          </div>
-        ))}
+        <h3 style={{ marginTop: '20px' }}>Profiles</h3>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
+          {profiles.map((p: any) => (
+            <div key={p.id} className="settings-row" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '10px' }}>
+              <span style={{ fontWeight: 'bold', minWidth: '60px' }}>{p.name}</span>
+              <input 
+                type="file" 
+                accept="image/*" 
+                onChange={(e) => handlePhotoUpload(p.id, e)}
+                style={{ fontSize: '12px', width: '150px' }}
+              />
+              {p.photo && (
+                <img 
+                  src={p.photo} 
+                  alt="Preview" 
+                  style={{ width: '40px', height: '40px', borderRadius: '50%', objectFit: 'cover' }} 
+                />
+              )}
+            </div>
+          ))}
+        </div>
 
-        <div className="modal-actions">
-          <button onClick={onClose}>Close</button>
+        <div className="modal-actions" style={{ marginTop: '30px', textAlign: 'right' }}>
+          <button 
+            onClick={onClose}
+            style={{ padding: '8px 16px', cursor: 'pointer' }}
+          >
+            Close
+          </button>
         </div>
       </div>
     </div>
