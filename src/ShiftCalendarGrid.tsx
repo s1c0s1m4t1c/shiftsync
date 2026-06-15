@@ -1,38 +1,10 @@
-// Change the component definition line to this:
-const ShiftCalendarGrid = ({ year, month, assignments, shiftDefinitions, profiles, events, onDayClick }: any) => {
-
-// Update the event filter parameter:
-const cellEvents = events.filter((ev: any) => {
-
-// Update the assignment map:
-{dayAssignments.map((assign: any, assignIdx: number) => {
-  const shiftDetails = shiftDefinitions.find((s: any) => s.id === assign.shiftId);
-  const profileDetails = profiles.find((p: any) => p.id === assign.profileId);
-
-import { Profile, Shift, AppEvent, Assignment } from './types';
-
-interface Props {
-  year: number;
-  month: number;
-  assignments: { [key: string]: Assignment[] };
-  shiftDefinitions: Shift[];
-  profiles: Profile[];
-  events: AppEvent[];
-  onDayClick: (dateKey: string) => void;
-}
-
-const ShiftCalendarGrid = ({ year, month, assignments, shiftDefinitions, profiles, events, onDayClick }: Props) => {
-  // ... rest of your code ...
-
-import React, { useMemo } from 'react';
-
-const formatDateKey = (year, month, day) => {
+const formatDateKey = (year: number, month: number, day: number) => {
   const mm = String(month + 1).padStart(2, '0');
   const dd = String(day).padStart(2, '0');
   return `${year}-${mm}-${dd}`;
 };
 
-function generateCalendarGrid(year, month) {
+function generateCalendarGrid(year: number, month: number) {
   const firstDayOfMonth = new Date(year, month, 1);
   const daysInMonth = new Date(year, month + 1, 0).getDate();
   const daysInPrevMonth = new Date(year, month, 0).getDate();
@@ -57,8 +29,8 @@ function generateCalendarGrid(year, month) {
   return grid;
 }
 
-const ShiftCalendarGrid = ({ year, month, assignments, shiftDefinitions, profiles, events, onDayClick }) => {
-  const gridDays = useMemo(() => generateCalendarGrid(year, month), [year, month]);
+const ShiftCalendarGrid = ({ year, month, assignments, shiftDefinitions, profiles, events, onDayClick }: any) => {
+  const gridDays = React.useMemo(() => generateCalendarGrid(year, month), [year, month]);
   const daysOfWeek = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 
   const todayDate = new Date();
@@ -71,11 +43,11 @@ const ShiftCalendarGrid = ({ year, month, assignments, shiftDefinitions, profile
       </div>
 
       <div className="calendar-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)' }}>
-        {gridDays.map((dayObj, index) => {
+        {gridDays.map((dayObj: any, index: number) => {
           const dayAssignments = assignments[dayObj.dateKey] || [];
           const isToday = dayObj.dateKey === todayKey;
 
-          const cellEvents = events.filter(ev => {
+          const cellEvents = events.filter((ev: any) => {
             if (!ev.startDate) return false;
             const [sY, sM, sD] = ev.startDate.split('-').map(Number);
             const [tY, tM, tD] = dayObj.dateKey.split('-').map(Number);
@@ -94,7 +66,7 @@ const ShiftCalendarGrid = ({ year, month, assignments, shiftDefinitions, profile
               <div className="cell-top-bar">
                 <span className="date-label">{dayObj.date}</span>
                 <div className="event-icon-container">
-                  {cellEvents.map(ev => (
+                  {cellEvents.map((ev: any) => (
                     ev.photo ? <img key={ev.id} src={ev.photo} alt={ev.name} className="event-photo-icon" title={ev.name} /> 
                              : <span key={ev.id} className="event-text-icon" title={ev.name}>🗓️</span>
                   ))}
@@ -102,9 +74,9 @@ const ShiftCalendarGrid = ({ year, month, assignments, shiftDefinitions, profile
               </div>
               
               <div className="shift-block-container">
-                {dayAssignments.map((assign, assignIdx) => {
-                  const shiftDetails = shiftDefinitions.find(s => s.id === assign.shiftId);
-                  const profileDetails = profiles.find(p => p.id === assign.profileId);
+                {dayAssignments.map((assign: any, assignIdx: number) => {
+                  const shiftDetails = shiftDefinitions.find((s: any) => s.id === assign.shiftId);
+                  const profileDetails = profiles.find((p: any) => p.id === assign.profileId);
                   
                   if (!shiftDetails || !profileDetails) return null;
 
