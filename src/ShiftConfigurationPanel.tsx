@@ -1,3 +1,14 @@
+import { Profile } from './types';
+
+interface Props {
+  profiles: Profile[];
+  onAddShift: (shift: any) => void;
+  onCancel: () => void;
+}
+
+const ShiftConfigurationPanel = ({ profiles, onAddShift, onCancel }: Props) => {
+  // ... rest of your code ...
+
 import React, { useState } from 'react';
 
 const ShiftConfigurationPanel = ({ profiles, onAddShift, onCancel }) => {
