@@ -6,9 +6,9 @@ const ShiftCalendarGrid = ({ assignments = [], shiftDefinitions = [], profiles =
     e.stopPropagation();
   };
 
-  // Ensure data exists before rendering to prevent crash
+  // Defensive check for assignments
   if (!Array.isArray(assignments)) {
-    return <div className="loading-state">Loading calendar...</div>;
+    return <div className="loading-state">Loading calendar data...</div>;
   }
 
   return (
@@ -22,7 +22,6 @@ const ShiftCalendarGrid = ({ assignments = [], shiftDefinitions = [], profiles =
           >
             <div className="day-header">{day.date}</div>
             
-            {/* Defensive check for shiftAssignments */}
             {Array.isArray(day.shiftAssignments) && day.shiftAssignments.map((assign: any, assignIdx: number) => {
               const shift = Array.isArray(shiftDefinitions) 
                 ? shiftDefinitions.find((s: any) => s.id === assign.shiftId) 
