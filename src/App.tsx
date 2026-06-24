@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { useState, useEffect, useMemo } from 'react';
 import './App.css'; 
@@ -72,7 +71,7 @@ export default function App() {
   };
 
   const visibleShifts = useMemo(() => {
-    return shiftDefinitions.filter(shift => shift.allowedProfiles && shift.allowedProfiles.includes(activeProfileId));
+    return shiftDefinitions.filter((shift: any) => shift.allowedProfiles && shift.allowedProfiles.includes(activeProfileId));
   }, [shiftDefinitions, activeProfileId]);
 
   return (
