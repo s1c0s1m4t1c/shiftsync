@@ -4,9 +4,10 @@ const ShiftCalendarGrid = ({ year, month, assignments = {}, shiftDefinitions = [
   
   const handleStopPropagation = (e: any) => e.stopPropagation();
 
-  // 1. Generate the grid
+  // If assignments is undefined or null, wait to render
+  if (!assignments) return <div className="loading">Loading...</div>;
+
   const daysInMonth = new Date(year, month + 1, 0).getDate();
-  const firstDay = new Date(year, month, 1).getDay();
   const days = Array.from({ length: daysInMonth }, (_, i) => i + 1);
 
   return (
@@ -14,17 +15,16 @@ const ShiftCalendarGrid = ({ year, month, assignments = {}, shiftDefinitions = [
       <div className="grid-container">
         {days.map((day) => {
           const dateKey = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
-          // Get assignments safely
-          const dayAssignments = assignments[dateKey] || [];
-          // Get events for this day
+          
+          // Safety: ensure assignments is an object
+          const dayAssignments = (assignments && typeof assignments === 'object') ? (assignments[dateKey] || []) : [];
           const dayEvents = Array.isArray(events) ? events.filter(e => e.date === dateKey) : [];
 
           return (
             <div key={dateKey} className="calendar-day" onClick={() => onDayClick(dateKey)}>
               <div className="day-header">{day}</div>
               
-              {/* Render Assignments */}
-              {Array.isArray(dayAssignments) && dayAssignments.map((assign: any, i: number) => {
+              {dayAssignments.map((assign: any, i: number) => {
                 const shift = shiftDefinitions.find((s: any) => s.id === assign.shiftId);
                 const profile = profiles.find((p: any) => p.id === assign.profileId);
                 return (
@@ -35,7 +35,6 @@ const ShiftCalendarGrid = ({ year, month, assignments = {}, shiftDefinitions = [
                 );
               })}
 
-              {/* Render Events */}
               {dayEvents.map((ev: any, i: number) => (
                 <div key={i} className="event-pill">{ev.title}</div>
               ))}
