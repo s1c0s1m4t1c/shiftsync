@@ -1,57 +1,62 @@
 import React from 'react';
 
-const ShiftCalendarGrid = ({ assignments = [], shiftDefinitions = [], profiles = [], events = [], onDayClick }: any) => {
-
+const ShiftCalendarGrid = ({ assignments = {}, shiftDefinitions = [], profiles = [], onDayClick }: any) => {
+  
   const handleStopPropagation = (e: any) => {
     e.stopPropagation();
   };
 
-  // Defensive check for assignments
-  if (!Array.isArray(assignments)) {
-    return <div className="loading-state">Loading calendar data...</div>;
-  }
+  // Generate an array of days to display (Example: next 30 days)
+  // Since you are using an object { "dateKey": [...] }, we map the keys
+  const dateKeys = Object.keys(assignments);
 
   return (
     <div className="calendar-grid">
       <div className="grid-container">
-        {assignments.map((day: any, dayIdx: number) => (
-          <div 
-            key={dayIdx} 
-            className="calendar-day" 
-            onClick={() => onDayClick(day)}
-          >
-            <div className="day-header">{day.date}</div>
+        {dateKeys.length > 0 ? (
+          dateKeys.map((dateKey: string) => {
+            const dayAssignments = assignments[dateKey];
             
-            {Array.isArray(day.shiftAssignments) && day.shiftAssignments.map((assign: any, assignIdx: number) => {
-              const shift = Array.isArray(shiftDefinitions) 
-                ? shiftDefinitions.find((s: any) => s.id === assign.shiftId) 
-                : null;
-              const profile = Array.isArray(profiles) 
-                ? profiles.find((p: any) => p.id === assign.profileId) 
-                : null;
-              
-              return (
-                <div 
-                  key={assignIdx} 
-                  className="assignment-pill"
-                  onClick={handleStopPropagation}
-                >
-                  <span className="profile-name">{profile?.name || 'Unknown'}</span>
-                  <span className="shift-name">{shift?.name || 'Unknown'}</span>
+            return (
+              <div 
+                key={dateKey} 
+                className="calendar-day" 
+                onClick={() => onDayClick(dateKey)}
+              >
+                <div className="day-header">{dateKey}</div>
+                
+                {Array.isArray(dayAssignments) && dayAssignments.map((assign: any, assignIdx: number) => {
+                  const shift = Array.isArray(shiftDefinitions) 
+                    ? shiftDefinitions.find((s: any) => s.id === assign.shiftId) 
+                    : null;
+                  const profile = Array.isArray(profiles) 
+                    ? profiles.find((p: any) => p.id === assign.profileId) 
+                    : null;
                   
-                  <button 
-                    className="delete-btn"
-                    onClick={(e) => {
-                      handleStopPropagation(e);
-                    }}
-                  >
-                    ×
-                  </button>
-                </div>
-              );
-            })}
-          </div>
-        ))}
+                  return (
+                    <div 
+                      key={assignIdx} 
+                      className="assignment-pill"
+                      onClick={handleStopPropagation}
+                    >
+                      <span className="profile-name">{profile?.name || 'Unknown'}</span>
+                      <span className="shift-name">{shift?.name || 'Unknown'}</span>
+                      
+                      <button 
+                        className="delete-btn"
+                        onClick={(e) => handleStopPropagation(e)}
+                      >
+                        ×
+                      </button>
+                    </div>
+                  );
+                })}
+              </div>
+            );
+          })
+        ) : (
+          <div className="empty-state">No shifts assigned yet.</div>
+        )}
       </div>
     </div>
   );
